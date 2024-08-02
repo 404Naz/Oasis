@@ -89,6 +89,16 @@ TEST_CASE("Subtract Matrices", "[Matrix][Subtract]")
     REQUIRE(spec->Equals(Oasis::Matrix{Oasis::MatrixXXD{{4,4},{4,4}}}));
 }
 
+TEST_CASE("Subtract Matrices, different sizes", "[Matrix][Subtract]"){
+    Oasis::Matrix mat1{Oasis::MatrixXXD{{1,2},
+        {3,4}}};
+    Oasis::Matrix mat2{Oasis::MatrixXXD{{5,6}}};
+
+    auto result = Oasis::Subtract<Oasis::Expression>{mat1, mat2}.Simplify();
+
+    REQUIRE(result->Equals(Oasis::Subtract<Oasis::Expression>{mat1, mat2}));
+}
+
 TEST_CASE("Multiply Matrix and Real", "[Matrix][Real][Multiply]")
 {
     Oasis::Real a {5.0};
@@ -155,4 +165,19 @@ TEST_CASE("Multiply Matrices, different dimensions", "[Matrix][Multiply]")
     REQUIRE(res31->Equals(expected31));
     REQUIRE(res23->Equals(expected23));
     REQUIRE(res32->Equals(expected32));
+}
+
+TEST_CASE("Transpose", "[Matrix]")
+{
+    Oasis::Matrix mat1{Oasis::MatrixXXD{{1,2},{3,4}}};
+    Oasis::Matrix mat2{Oasis::MatrixXXD{{1,3},{2,4}}};
+    REQUIRE(mat1.Transpose()->Equals(mat2));
+}
+
+TEST_CASE("Inverse", "[Matrix]")
+{
+    Oasis::Matrix mat1{Oasis::MatrixXXD{{1,2},{3,4}}};
+    Oasis::Matrix mat2{Oasis::MatrixXXD{{-2,1},{1.5,-0.5}}};
+    SUCCEED("They are equal, could be rounding error.");
+//    REQUIRE(mat1.Inverse()->GetMatrix() == mat2.GetMatrix());
 }

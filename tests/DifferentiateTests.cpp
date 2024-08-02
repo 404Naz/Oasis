@@ -281,6 +281,18 @@ TEST_CASE("Natural Exponential Derivative", "[Derivative][Exponent][Euler's Numb
     REQUIRE(simplified2->Equals(expected2));
 }
 
+TEST_CASE("Derivative of Exponent", "[Differentiate][Exponent][Derivative]")
+{
+    Oasis::Derivative d1{Oasis::Exponent{Oasis::Variable{"x"}, Oasis::Real{2}}, Oasis::Variable{"x"}};
+    Oasis::Derivative d2{Oasis::Exponent{Oasis::Real{2}, Oasis::Variable{"x"}}, Oasis::Variable{"x"}};
+
+    auto simp1 = d1.Simplify();
+    auto simp2 = d2.Simplify();
+
+    REQUIRE(simp1->Equals(Oasis::Multiply{Oasis::Real{2}, Oasis::Variable{"x"}}));
+    REQUIRE(simp2->Equals(*Oasis::Multiply{Oasis::Exponent{Oasis::Real{2}, Oasis::Variable{"x"}}, Oasis::Log{Oasis::EulerNumber{}, Oasis::Real{2}}}.Simplify()));
+}
+
 TEST_CASE("Natural Logarithm Derivative", "[Derivative][Logarithm][Euler's Number]")
 {
     Oasis::Derivative diffLog{

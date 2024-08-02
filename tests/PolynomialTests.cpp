@@ -76,12 +76,6 @@ TEST_CASE("irrational quadratic", "[quadraticFormula]")
             vec.push_back(Oasis::Divide(num, Oasis::Exponent(Oasis::Variable("x"), Oasis::Real(-exp))).Copy());
         } else if (exp == -1) {
             vec.push_back(Oasis::Divide(num, Oasis::Variable("x")).Copy());
-        } else if (exp == 0) {
-            vec.push_back(num.Copy());
-        } else if (exp == 1) {
-            vec.push_back(Oasis::Multiply(num, Oasis::Variable("x")).Copy());
-        } else {
-            vec.push_back(Oasis::Multiply(num, Oasis::Exponent(Oasis::Variable("x"), Oasis::Real(exp))).Copy());
         }
     }
     auto add = Oasis::BuildFromVector<Oasis::Add>(vec);

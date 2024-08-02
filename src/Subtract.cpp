@@ -181,29 +181,7 @@ auto Subtract<Expression>::Differentiate(const Expression& differentiationVariab
     // Single diff variable
     if (auto variable = Variable::Specialize(differentiationVariable); variable != nullptr) {
         auto simplifiedSub = this->Simplify();
-
-        // Make sure we're still subtracting
-        if (auto adder = Subtract<Expression>::Specialize(*simplifiedSub); adder != nullptr) {
-            auto rightRef = adder->GetLeastSigOp().Copy();
-            auto rightDiff = rightRef->Differentiate(differentiationVariable);
-
-            auto specializedRight = Expression::Specialize(*rightDiff);
-
-            auto leftRef = adder->GetMostSigOp().Copy();
-            auto leftDiff = leftRef->Differentiate(differentiationVariable);
-
-            auto specializedLeft = Expression::Specialize(*leftDiff);
-
-            if (specializedLeft == nullptr || specializedRight == nullptr) {
-                return Copy();
-            }
-
-            return std::make_unique<Subtract<Expression, Expression>>(Subtract<Expression, Expression> { *(specializedLeft->Copy()), *(specializedRight->Copy()) })->Simplify();
-        }
-        // If not, use other differentiation technique
-        else {
-            return simplifiedSub->Differentiate(differentiationVariable);
-        }
+        return simplifiedSub->Differentiate(differentiationVariable);
     }
     return Copy();
 }
@@ -213,34 +191,9 @@ auto Subtract<Expression>::Integrate(const Expression& integrationVariable) cons
     // Single integration variable
     if (auto variable = Variable::Specialize(integrationVariable); variable != nullptr) {
         auto simplifiedSub = this->Simplify();
-
-        // Make sure we're still subtracting
-        if (auto adder = Subtract<Expression>::Specialize(*simplifiedSub); adder != nullptr) {
-            auto leftRef = adder->GetLeastSigOp().Copy();
-            auto leftIntegral = leftRef->Integrate(integrationVariable);
-
-            auto specializedLeft = Add<Expression>::Specialize(*leftIntegral);
-
-            auto rightRef = adder->GetMostSigOp().Copy();
-            auto rightIntegral = rightRef->Integrate(integrationVariable);
-
-            auto specializedRight = Add<Expression>::Specialize(*rightIntegral);
-
-            if (specializedLeft == nullptr || specializedRight == nullptr) {
-                return Copy();
-            }
-            Add add { Subtract<Expression> {
-                          *(specializedRight->GetMostSigOp().Copy()),
-                          *(specializedLeft->GetMostSigOp().Copy()) },
-                Variable { "C" } };
-
-            return add.Simplify();
-        }
-        // If not, use other integration technique
-        else {
-            return simplifiedSub->Integrate(integrationVariable);
-        }
+        return simplifiedSub->Integrate(integrationVariable);
     }
+    // TODO: U SUB
     Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();

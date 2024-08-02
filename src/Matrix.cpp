@@ -79,7 +79,7 @@ auto Matrix::Specialize(const Expression& other, tf::Subflow&) -> std::unique_pt
     return other.Is<Matrix>() ? std::make_unique<Matrix>(dynamic_cast<const Matrix&>(other)) : nullptr;
 }
 
-// TO DO: Fix?
+// TODO: Fix?
 auto Matrix::Integrate(const Expression& integrationVariable) const -> std::unique_ptr<Expression>
 {
     Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };

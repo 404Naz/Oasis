@@ -39,6 +39,7 @@ auto Variable::Specialize(const Expression& other, tf::Subflow&) -> std::unique_
 
 auto Variable::Integrate(const Expression& integrationVariable) const -> std::unique_ptr<Expression>
 {
+    // integration expression is variable
     if (auto variable = Variable::Specialize(integrationVariable); variable != nullptr) {
 
         // Power rule
@@ -59,6 +60,7 @@ auto Variable::Integrate(const Expression& integrationVariable) const -> std::un
         };
         return adder.Simplify();
     }
+    // TODO: U SUB
 
     Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
@@ -79,6 +81,7 @@ auto Variable::Substitute(const Expression& var, const Expression& val) -> std::
 
 auto Variable::Differentiate(const Expression& differentiationVariable) const -> std::unique_ptr<Expression>
 {
+    // differentiating in terms of variable
     if (auto variable = Variable::Specialize(differentiationVariable); variable != nullptr) {
 
         // Power rule
@@ -91,7 +94,7 @@ auto Variable::Differentiate(const Expression& differentiationVariable) const ->
         return std::make_unique<Real>(Real { 0 })
             ->Simplify();
     }
-
+    // differentiating in terms of function (U Sub)
     return Copy();
 }
 

@@ -18,8 +18,43 @@ TEST_CASE("Substitute Unary", "[Substitute]")
         Oasis::Multiply{
             Oasis::Real { 3.0 },
             Oasis::Variable { "x" } }
-    }; // 2x+3x
+    }; // -2x+3x
 
     const auto after = before.Substitute(Oasis::Variable { "x" }, Oasis::Real { 4.0 }); // after should some std::unique_ptr<Expression> such that it equals 2(-4) + 3(4)
     REQUIRE(after->Equals(Oasis::Real { 4 }));
+}
+
+TEST_CASE("Substitute Unary, Wrong variable", "[Substitute]")
+{
+    Oasis::Add before {
+        Oasis::Multiply {
+            Oasis::Real { 2.0 },
+            Oasis::Negate { Oasis::Variable { "x" } } },
+        Oasis::Multiply{
+            Oasis::Real { 3.0 },
+            Oasis::Variable { "x" } }
+    }; // -2x+3x
+
+    const auto after = before.Substitute(Oasis::Variable { "y" }, Oasis::Real { 4.0 }); // after should some std::unique_ptr<Expression> such that it equals 2(-4) + 3(4)
+    REQUIRE(after->Simplify()->Equals(Oasis::Variable{"x"}));
+}
+
+TEST_CASE("Substitute Unary, var not variable", "[Substitute]")
+{
+    Oasis::Add before {
+        Oasis::Multiply {
+            Oasis::Real { 2.0 },
+            Oasis::Negate { Oasis::Variable { "x" } } },
+        Oasis::Multiply{
+            Oasis::Real { 3.0 },
+            Oasis::Variable { "x" } }
+    }; // 2x+3x
+
+    try {
+        const auto after = before.Substitute(Oasis::Real { 23.0 }, Oasis::Real { 4.0 }); // after should some std::unique_ptr<Expression> such that it equals 2(-4) + 3(4)
+        FAIL();
+    } catch (...){
+        SUCCEED();
+    }
+
 }
