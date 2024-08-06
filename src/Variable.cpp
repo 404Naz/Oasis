@@ -6,7 +6,7 @@
 #include "Oasis/Add.hpp"
 #include "Oasis/Divide.hpp"
 #include "Oasis/Exponent.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Multiply.hpp"
 #include "Oasis/Real.hpp"
 
@@ -62,7 +62,7 @@ auto Variable::Integrate(const Expression& integrationVariable) const -> std::un
     }
     // TODO: U SUB
 
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

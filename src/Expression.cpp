@@ -1,12 +1,12 @@
 #include "taskflow/taskflow.hpp"
 
 #include "Oasis/Expression.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 
 #include <Oasis/Add.hpp>
 #include <Oasis/Divide.hpp>
 #include <Oasis/Exponent.hpp>
-#include <Oasis/Integral.hpp>
+#include <Oasis/IndefiniteIntegral.hpp>
 #include <Oasis/Multiply.hpp>
 #include <Oasis/Subtract.hpp>
 #include <Oasis/Variable.hpp>
@@ -250,14 +250,14 @@ auto Expression::Specialize(const Expression& other, tf::Subflow& subflow) -> st
 
 auto Expression::Integrate(const Expression& variable) const -> std::unique_ptr<Expression>
 {
-    Integral<Expression, Expression> integral { *(this->Copy()), *(variable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(variable.Copy()) };
 
     return integral.Copy();
 }
 
 auto Expression::IntegrateWithBounds(const Expression& variable, const Expression&, const Expression&) -> std::unique_ptr<Expression>
 {
-    Integral<Expression, Expression> integral { *(this->Copy()), *(variable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(variable.Copy()) };
 
     return integral.Copy();
 }

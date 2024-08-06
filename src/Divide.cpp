@@ -9,7 +9,7 @@
 #include "Oasis/Divide.hpp"
 #include "Oasis/Exponent.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Log.hpp"
 #include "Oasis/Multiply.hpp"
 #include "Oasis/Subtract.hpp"
@@ -307,7 +307,7 @@ auto Divide<Expression>::Integrate(const Expression& integrationVariable) const 
         }
     }
 
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

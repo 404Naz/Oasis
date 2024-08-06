@@ -2,7 +2,7 @@
 // Created by Andrew Nazareth on 5/24/24.
 //
 #include "Oasis/Matrix.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Real.hpp"
 
 namespace Oasis {
@@ -82,7 +82,7 @@ auto Matrix::Specialize(const Expression& other, tf::Subflow&) -> std::unique_pt
 // TODO: Fix?
 auto Matrix::Integrate(const Expression& integrationVariable) const -> std::unique_ptr<Expression>
 {
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

@@ -25,7 +25,7 @@ public:
     void Serialize(const Log<Expression, Expression>& log) override;
     void Serialize(const Negate<Expression>& negate) override;
     void Serialize(const Derivative<Expression, Expression>& derivative) override;
-    void Serialize(const Integral<Expression, Expression>& integral) override;
+    void Serialize(const IndefiniteIntegral<Expression, Expression>& integral) override;
 
     [[nodiscard]] std::string getResult() const;
 

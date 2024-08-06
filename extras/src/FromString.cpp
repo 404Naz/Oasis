@@ -6,12 +6,12 @@
 #include <sstream>
 #include <stack>
 
+#include "Oasis/Imaginary.hpp"
 #include <Oasis/Add.hpp>
 #include <Oasis/Derivative.hpp>
 #include <Oasis/Divide.hpp>
 #include <Oasis/Exponent.hpp>
-#include "Oasis/Imaginary.hpp"
-#include <Oasis/Integral.hpp>
+#include <Oasis/IndefiniteIntegral.hpp>
 #include <Oasis/Log.hpp>
 #include <Oasis/Multiply.hpp>
 #include <Oasis/Real.hpp>
@@ -125,7 +125,7 @@ bool processFunction(std::stack<std::unique_ptr<Oasis::Expression>>& st, const s
         setOps(dd, first_operand, second_operand);
         func = dd.Copy();
     } else if (function_token == "in") {
-        Oasis::Integral<> in;
+        Oasis::IndefiniteIntegral<> in;
         setOps(in, first_operand, second_operand);
         func = in.Copy();
     } else {

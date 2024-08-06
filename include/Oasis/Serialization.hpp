@@ -45,7 +45,7 @@ template <IExpression, IExpression>
 class Derivative;
 
 template <IExpression Integrand, IExpression Differential>
-class Integral;
+class IndefiniteIntegral;
 
 class SerializationVisitor {
 public:
@@ -65,7 +65,7 @@ public:
     virtual void Serialize(const Negate<Expression>& negate) = 0;
     virtual void Serialize(const Magnitude<Expression>& magnitude) = 0;
     virtual void Serialize(const Derivative<Expression, Expression>& derivative) = 0;
-    virtual void Serialize(const Integral<Expression, Expression>& integral) = 0;
+    virtual void Serialize(const IndefiniteIntegral<Expression, Expression>& integral) = 0;
 
     virtual ~SerializationVisitor() = default;
 };

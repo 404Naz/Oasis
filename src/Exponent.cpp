@@ -11,7 +11,7 @@
 #include "Oasis/Derivative.hpp"
 #include "Oasis/EulerNumber.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Log.hpp"
 #include "Oasis/Multiply.hpp"
 
@@ -192,7 +192,7 @@ auto Exponent<Expression>::Integrate(const Expression& integrationVariable) cons
         }
     }
 
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

@@ -7,6 +7,7 @@
 #include "Oasis/Real.hpp"
 #include "Oasis/Subtract.hpp"
 #include "Oasis/Variable.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 
 TEST_CASE("Integrate Nonzero number", "[Integrate][Real][Nonzero]")
 {
@@ -178,4 +179,16 @@ TEST_CASE("Integrate Add Rule Like Terms", "[Integrate][Add][Like]")
     auto simplified = integrated->Simplify();
 
     REQUIRE(simplified->Equals(*(integral.Simplify())));
+}
+
+TEST_CASE("Integral Specialize", "[IndefiniteIntegral]")
+{
+    Oasis::IndefiniteIntegral<Oasis::Expression> i1{Oasis::Variable{}, Oasis::Variable{}};
+    Oasis::Variable v2{};
+
+    auto gen1 = i1.Generalize();
+    auto gen2 = v2.Generalize();
+
+    REQUIRE(Oasis::IndefiniteIntegral<Oasis::Expression>::Specialize(*gen1) != nullptr);
+    REQUIRE(Oasis::IndefiniteIntegral<Oasis::Expression>::Specialize(*gen2) == nullptr);
 }

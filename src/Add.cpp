@@ -6,7 +6,7 @@
 #include "Oasis/Add.hpp"
 #include "Oasis/Exponent.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Log.hpp"
 #include "Oasis/Matrix.hpp"
 #include "Oasis/Multiply.hpp"
@@ -341,7 +341,7 @@ auto Add<Expression>::Integrate(const Expression& integrationVariable) const -> 
             return simplifiedAdd->Integrate(integrationVariable)->Simplify();
         }
     }
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

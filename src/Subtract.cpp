@@ -7,7 +7,7 @@
 #include "Oasis/Divide.hpp"
 #include "Oasis/Exponent.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Log.hpp"
 #include "Oasis/Matrix.hpp"
 #include "Oasis/Multiply.hpp"
@@ -194,7 +194,7 @@ auto Subtract<Expression>::Integrate(const Expression& integrationVariable) cons
         return simplifiedSub->Integrate(integrationVariable);
     }
     // TODO: U SUB
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

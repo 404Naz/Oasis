@@ -15,7 +15,7 @@ set(Oasis_SOURCES
     Exponent.cpp
     Expression.cpp
     Imaginary.cpp
-    Integral.cpp
+        IndefiniteIntegral.cpp
     Linear.cpp
     Log.cpp
     Magnitude.cpp

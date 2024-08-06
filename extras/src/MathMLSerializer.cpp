@@ -9,18 +9,18 @@
 #include "Oasis/Add.hpp"
 #include "Oasis/Derivative.hpp"
 #include "Oasis/Divide.hpp"
+#include "Oasis/EulerNumber.hpp"
 #include "Oasis/Exponent.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Log.hpp"
-#include "Oasis/Multiply.hpp"
+#include "Oasis/Magnitude.hpp"
 #include "Oasis/Matrix.hpp"
+#include "Oasis/Multiply.hpp"
 #include "Oasis/Negate.hpp"
+#include "Oasis/Pi.hpp"
 #include "Oasis/Real.hpp"
 #include "Oasis/Subtract.hpp"
 #include "Oasis/Variable.hpp"
-#include "Oasis/EulerNumber.hpp"
-#include "Oasis/Pi.hpp"
-#include "Oasis/Magnitude.hpp"
 
 namespace Oasis {
 
@@ -365,11 +365,11 @@ void MathMLSerializer::Serialize(const Derivative<>& derivative)
     result = mrow;
 }
 
-void MathMLSerializer::Serialize(const Integral<>& integral)
+void MathMLSerializer::Serialize(const IndefiniteIntegral<>& integral)
 {
     tinyxml2::XMLElement* mrow = doc.NewElement("mrow");
 
-    // Integral symbol
+    // IndefiniteIntegral symbol
     tinyxml2::XMLElement* inte = doc.NewElement("mo");
     inte->SetText("\u222B");
 

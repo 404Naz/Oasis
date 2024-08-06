@@ -330,3 +330,18 @@ TEST_CASE("Any Base Exponential Derivative", "[Derivative][Exponent]")
     auto simplified = diffExp.Simplify();
     REQUIRE(simplified->Equals(expected));
 }
+
+TEST_CASE("Test Differentiate Specialize", "[Derivative]")
+{
+    Oasis::Derivative d1{};
+    Oasis::Variable v1{};
+
+    auto gen1 = d1.Generalize();
+    auto gen2 = v1.Generalize();
+
+    auto a = Oasis::Derivative<Oasis::Expression>::Specialize(*gen1);
+    auto b = Oasis::Derivative<Oasis::Expression>::Specialize(*gen2);
+
+    REQUIRE(a != nullptr);
+    REQUIRE(b == nullptr);
+}

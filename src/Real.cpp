@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Oasis/Add.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Multiply.hpp"
 #include "Oasis/Real.hpp"
 #include "Oasis/Variable.hpp"
@@ -59,7 +59,7 @@ auto Real::Integrate(const Expression& integrationVariable) const -> std::unique
         return std::make_unique<Variable>(Variable { "C" })->Simplify();
     }
 
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

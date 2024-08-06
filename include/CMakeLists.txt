@@ -8,7 +8,7 @@ set(Oasis_HEADERS
     Oasis/Exponent.hpp
     Oasis/Expression.hpp
     Oasis/Imaginary.hpp
-    Oasis/Integral.hpp
+        Oasis/IndefiniteIntegral.hpp
     Oasis/LeafExpression.hpp
     Oasis/Linear.hpp
     Oasis/Log.hpp

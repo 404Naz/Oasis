@@ -7,7 +7,7 @@
 #include "Oasis/Divide.hpp"
 #include "Oasis/Exponent.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Matrix.hpp"
 #include "Oasis/Negate.hpp"
 #include "Oasis/Subtract.hpp"
@@ -415,7 +415,7 @@ auto Multiply<Expression>::Integrate(const Expression& integrationVariable) cons
 
         // TODO: Implement integration by parts
     }
-    Integral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
+    IndefiniteIntegral<Expression, Expression> integral { *(this->Copy()), *(integrationVariable.Copy()) };
 
     return integral.Copy();
 }

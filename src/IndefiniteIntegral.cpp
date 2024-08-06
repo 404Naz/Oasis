@@ -2,7 +2,7 @@
 // Created by Levy Lin on 2/09/2024.
 //
 
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 
 #include "Oasis/Add.hpp"
 #include "Oasis/Divide.hpp"
@@ -14,14 +14,14 @@
 
 namespace Oasis {
 
-Integral<Expression>::Integral(const Expression& integrand, const Expression& differential)
+IndefiniteIntegral<Expression>::IndefiniteIntegral(const Expression& integrand, const Expression& differential)
     : BinaryExpression(integrand, differential)
 {
 }
 
-auto Integral<Expression>::Simplify() const -> std::unique_ptr<Expression>
+auto IndefiniteIntegral<Expression>::Simplify() const -> std::unique_ptr<Expression>
 {
-    // Returns simplified Integral
+    // Returns simplified IndefiniteIntegral
 
     auto simplifiedIntegrand = mostSigOp ? mostSigOp->Simplify() : nullptr;
     auto simplifiedDifferential = leastSigOp ? leastSigOp->Simplify() : nullptr;
@@ -29,21 +29,21 @@ auto Integral<Expression>::Simplify() const -> std::unique_ptr<Expression>
     return simplifiedIntegrand->Integrate(*simplifiedDifferential);
 }
 
-auto Integral<Expression>::Simplify(const Expression& upper, const Expression& lower) const -> std::unique_ptr<Expression>
+auto IndefiniteIntegral<Expression>::Simplify(const Expression& upper, const Expression& lower) const -> std::unique_ptr<Expression>
 {
-    // Returns simplified Integral
+    // Returns simplified IndefiniteIntegral
 
     auto simplifiedIntegrand = mostSigOp ? mostSigOp->Simplify() : nullptr;
     auto simplifiedDifferential = leastSigOp ? leastSigOp->Simplify() : nullptr;
 
     return simplifiedIntegrand->IntegrateWithBounds(*simplifiedDifferential, upper, lower);
     /*
-        Integral simplifiedIntegrate { *simplifiedIntegrand, *simplifiedDifferential };
+        IndefiniteIntegral simplifiedIntegrate { *simplifiedIntegrand, *simplifiedDifferential };
 
         // Bounded Integration Rules
 
         // Constant Rule
-        if (auto constCase = Integral<Real, Variable>::Specialize(simplifiedIntegrate); constCase != nullptr) {
+        if (auto constCase = IndefiniteIntegral<Real, Variable>::Specialize(simplifiedIntegrate); constCase != nullptr) {
             const Real& constant = constCase->GetMostSigOp();
 
             auto upper_bound = Real::Specialize(upper);
@@ -59,7 +59,7 @@ auto Integral<Expression>::Simplify(const Expression& upper, const Expression& l
             return std::make_unique<Subtract<Expression>>(*Multiply<Expression> { constant, upper }.Simplify(), *Multiply<Expression> { constant, lower }.Simplify());
         }
 
-        if (auto constCase = Integral<Divide<Real>, Variable>::Specialize(simplifiedIntegrate); constCase != nullptr) {
+        if (auto constCase = IndefiniteIntegral<Divide<Real>, Variable>::Specialize(simplifiedIntegrate); constCase != nullptr) {
             Oasis::Divide constant { constCase->GetMostSigOp() };
             auto constReal = Real::Specialize(*constant.Simplify());
 
@@ -77,7 +77,7 @@ auto Integral<Expression>::Simplify(const Expression& upper, const Expression& l
         }
 
         // Power Rule
-        if (auto powerCase = Integral<Exponent<Expression>, Variable>::Specialize(simplifiedIntegrate); powerCase != nullptr) {
+        if (auto powerCase = IndefiniteIntegral<Exponent<Expression>, Variable>::Specialize(simplifiedIntegrate); powerCase != nullptr) {
             const Variable& differential = powerCase->GetLeastSigOp();
             Oasis::Exponent exponent { powerCase->GetMostSigOp() };
             auto integral = Add<Divide<Exponent<Variable, Real>, Real>, Variable>::Specialize(*exponent.Integrate(differential));
@@ -146,7 +146,7 @@ auto Integral<Expression>::Simplify(const Expression& upper, const Expression& l
         */
 }
 
-auto Integral<Expression>::Simplify(tf::Subflow&) const -> std::unique_ptr<Expression>
+auto IndefiniteIntegral<Expression>::Simplify(tf::Subflow&) const -> std::unique_ptr<Expression>
 {
     std::unique_ptr<Expression> simplifiedIntegrand, simplifiedDifferential;
 
@@ -155,24 +155,24 @@ auto Integral<Expression>::Simplify(tf::Subflow&) const -> std::unique_ptr<Expre
     return Copy();
 }
 
-auto Integral<Expression>::Specialize(const Expression& other) -> std::unique_ptr<Integral<Expression, Expression>>
+auto IndefiniteIntegral<Expression>::Specialize(const Expression& other) -> std::unique_ptr<IndefiniteIntegral<Expression, Expression>>
 {
-    if (!other.Is<Oasis::Integral>()) {
+    if (!other.Is<Oasis::IndefiniteIntegral>()) {
         return nullptr;
     }
 
     auto otherGeneralized = other.Generalize();
-    return std::make_unique<Integral>(dynamic_cast<const Integral&>(*otherGeneralized));
+    return std::make_unique<IndefiniteIntegral>(dynamic_cast<const IndefiniteIntegral&>(*otherGeneralized));
 }
 
-auto Integral<Expression>::Specialize(const Expression& other, tf::Subflow& subflow) -> std::unique_ptr<Integral>
+auto IndefiniteIntegral<Expression>::Specialize(const Expression& other, tf::Subflow& subflow) -> std::unique_ptr<IndefiniteIntegral>
 {
-    if (!other.Is<Oasis::Integral>()) {
+    if (!other.Is<Oasis::IndefiniteIntegral>()) {
         return nullptr;
     }
 
     auto otherGeneralized = other.Generalize(subflow);
-    return std::make_unique<Integral>(dynamic_cast<const Integral&>(*otherGeneralized));
+    return std::make_unique<IndefiniteIntegral>(dynamic_cast<const IndefiniteIntegral&>(*otherGeneralized));
 }
 
 } // Oasis

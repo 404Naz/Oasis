@@ -11,7 +11,7 @@
 #include "Oasis/Exponent.hpp"
 #include "Oasis/Expression.hpp"
 #include "Oasis/Imaginary.hpp"
-#include "Oasis/Integral.hpp"
+#include "Oasis/IndefiniteIntegral.hpp"
 #include "Oasis/Multiply.hpp"
 #include "Oasis/Pi.hpp"
 #include "Oasis/Subtract.hpp"
@@ -123,10 +123,10 @@ auto Log<Expression>::Integrate(const Oasis::Expression& integrationVariable) co
         auto denom = Log<Expression> { EulerNumber {}, *(this->mostSigOp->Generalize()) };
         if (numer.Equals(denom))
             return integrationVariable.Generalize();
-        return Divide { Integral { numer, integrationVariable }, denom }.Simplify();
+        return Divide { IndefiniteIntegral { numer, integrationVariable }, denom }.Simplify();
     }
 
-    return Integral<Expression> { *this, integrationVariable }.Generalize();
+    return IndefiniteIntegral<Expression> { *this, integrationVariable }.Generalize();
 }
 
 auto Log<Expression>::Differentiate(const Oasis::Expression& differentiationVariable) const -> std::unique_ptr<Expression>
