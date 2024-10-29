@@ -20,6 +20,7 @@ set(Oasis_HEADERS
     Oasis/Real.hpp
     Oasis/RecursiveCast.hpp
     Oasis/Serialization.hpp
+    Oasis/SolveODE.hpp
     Oasis/Subtract.hpp
     Oasis/UnaryExpression.hpp
     Oasis/Undefined.hpp

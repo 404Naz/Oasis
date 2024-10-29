@@ -18,7 +18,12 @@
 
 namespace Oasis {
 Derivative<Expression>::Derivative(const Expression& exp, const Expression& var)
-    : BinaryExpression(exp, var)
+    : BinaryExpression(exp, var), degree(1)
+{
+}
+
+Derivative<Expression>::Derivative(const Oasis::Expression& exp, const Oasis::Expression& var, int deg)
+    : degree(deg), BinaryExpression(exp, var)
 {
 }
 

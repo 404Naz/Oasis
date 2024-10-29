@@ -318,3 +318,11 @@ TEST_CASE("Any Base Exponential Derivative", "[Derivative][Exponent]")
     auto simplified = diffExp.Simplify();
     REQUIRE(simplified->Equals(expected));
 }
+
+TEST_CASE("Derivative with degree", "[Derivative]")
+{
+    Oasis::Exponent exp{Oasis::Variable{"a"}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
+    Oasis::Derivative diffExp{exp, Oasis::Variable{"x"}};
+
+    // TODO: Derivative for different degrees
+}

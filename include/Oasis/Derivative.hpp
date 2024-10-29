@@ -20,6 +20,7 @@ public:
     Derivative(const Derivative<Expression, Expression>& other) = default;
 
     Derivative(const Expression& Exp, const Expression& Var);
+    Derivative(const Expression& Exp, const Expression& Var, int degree);
 
     [[nodiscard]] auto Simplify() const -> std::unique_ptr<Expression> final;
 
@@ -27,6 +28,9 @@ public:
 
     EXPRESSION_TYPE(Derivative)
     EXPRESSION_CATEGORY(BinExp)
+
+private:
+    int degree;
 };
 /// @endcond
 
