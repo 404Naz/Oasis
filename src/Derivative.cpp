@@ -17,20 +17,28 @@
 #include <string>
 
 namespace Oasis {
-Derivative<Expression>::Derivative(const Expression& exp, const Expression& var)
-    : BinaryExpression(exp, var), degree(1)
-{
-}
+// OLD, CAN REMOVE IF DESIRED
+//Derivative<Expression>::Derivative(const Expression& exp, const Expression& var)
+//    : BinaryExpression(exp, var), degree(1)
+//{
+//}
 
-Derivative<Expression>::Derivative(const Oasis::Expression& exp, const Oasis::Expression& var, int deg)
-    : degree(deg), BinaryExpression(exp, var)
-{
-}
+//Derivative<Expression>::Derivative(const Oasis::Expression& exp, const Oasis::Expression& var, int deg = 1)
+//    : BinaryExpression(exp, var), degree(deg)
+//{
+//}
 
 auto Derivative<Expression>::Simplify() const -> std::unique_ptr<Expression>
 {
     auto simplifiedExpression = mostSigOp ? mostSigOp->Simplify() : nullptr;
     auto simplifiedVar = leastSigOp ? leastSigOp->Simplify() : nullptr;
+    if (this->degree != 1){
+        auto diffExp = simplifiedExpression->Copy();
+        for (int i = 0; i < degree; i++){
+            diffExp = diffExp->Differentiate(*simplifiedVar);
+        }
+        return diffExp->Generalize();
+    }
     return simplifiedExpression->Differentiate(*simplifiedVar);
 }
 

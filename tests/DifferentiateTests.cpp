@@ -321,8 +321,39 @@ TEST_CASE("Any Base Exponential Derivative", "[Derivative][Exponent]")
 
 TEST_CASE("Derivative with degree", "[Derivative]")
 {
-    Oasis::Exponent exp{Oasis::Variable{"a"}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
+    Oasis::Exponent exp{Oasis::EulerNumber{}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
     Oasis::Derivative diffExp{exp, Oasis::Variable{"x"}};
 
-    // TODO: Derivative for different degrees
+    Oasis::Derivative diff2Exp(exp, Oasis::Variable{"x"}, 2);
+
+    REQUIRE(diffExp.GetDegree() == 1);
+    REQUIRE(diff2Exp.GetDegree() == 2);
+
+    Oasis::Derivative diff3Exp(exp, Oasis::Variable{"x"});
+    diff3Exp.SetDegree(3);
+
+    REQUIRE(diff3Exp.GetDegree() == 3);
+
+    auto simplified1 = diffExp.Simplify();
+
+    Oasis::Multiply expected1{Oasis::Real{2}, exp};
+    Oasis::Multiply expected2{Oasis::Real{4}, exp};
+
+    REQUIRE(simplified1->Equals(expected1));
+}
+
+// TODO: FIX SO IT WORKS
+TEST_CASE("Second Degree Derivative", "[Derivative]")
+{
+    Oasis::Exponent exp{Oasis::EulerNumber{}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
+
+    Oasis::Derivative diff2Exp(exp, Oasis::Variable{"x"}, 2);
+
+    REQUIRE(diff2Exp.GetDegree() == 2);
+
+    auto simplified2 = diff2Exp.Simplify();
+
+    Oasis::Multiply expected2{Oasis::Real{4}, exp};
+
+    REQUIRE(simplified2->Equals(expected2));
 }
