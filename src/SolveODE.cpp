@@ -3,25 +3,39 @@
 //
 
 #include "Oasis/SolveODE.hpp"
-#include "Oasis/Multiply.hpp"
-#include "Oasis/Expression.hpp"
-#include "Oasis/Exponent.hpp"
-#include "Oasis/Variable.hpp"
+#include "Oasis/Add.hpp"
+#include "Oasis/Divide.hpp"
 #include "Oasis/EulerNumber.hpp"
+#include "Oasis/Exponent.hpp"
+#include "Oasis/Expression.hpp"
+#include "Oasis/Multiply.hpp"
 #include "Oasis/Negate.hpp"
+#include "Oasis/Variable.hpp"
+#include <string>
 
 namespace Oasis{
-auto SolveHomogenousODE(std::vector<std::unique_ptr<Expression>>& terms) -> std::unique_ptr<Expression>{
-    std::vector<std::unique_ptr<Expression>> vals;
-
+auto SolveHomogenousODE(std::vector<std::unique_ptr<Expression>>& terms, Variable& DiffVar) -> std::unique_ptr<Expression>{
     // First Order
     if (terms.size() == 2){
-        return Exponent{EulerNumber{}, Multiply{*(Negate<Expression>{*terms[0]}.Simplify()), Variable{"t"}}}.Generalize();
+        auto r = Divide{*(Negate<Expression>{*terms[0]}.Simplify()), *terms[1]}.Simplify();
+        return Multiply{Variable{"c_0"}, Exponent{EulerNumber{}, Multiply{*r, DiffVar}}}.Generalize();
     }
+
+    std::vector<std::unique_ptr<Expression>> vals;
 
     vals.reserve(terms.size());
     for (int i = 0; i < terms.size(); i++) {
         vals.push_back(Multiply<Expression> { *terms[i], Exponent { Variable { "r" }, Real { static_cast<double>(i) } } }.Generalize());
+    }
+
+    std::unique_ptr<Add<Expression>> expr = BuildFromVector<Add>(vals);
+    auto zeroes = expr->FindZeros();
+
+    std::vector<Multiply<Expression>> ans;
+    ans.reserve(zeroes.size());
+    for (int i = 0; i < zeroes.size(); i++){
+//        ans.push_back(Multiply{Variable{std::string("c_").append(std::to_string(i))},
+//                        Exponent{}});
     }
 
     return Exponent{EulerNumber{}, Multiply{Real{1}, Variable{"t"}}}.Generalize();
