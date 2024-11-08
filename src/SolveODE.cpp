@@ -31,13 +31,14 @@ auto SolveHomogenousODE(std::vector<std::unique_ptr<Expression>>& terms, Variabl
     std::unique_ptr<Add<Expression>> expr = BuildFromVector<Add>(vals);
     auto zeroes = expr->FindZeros();
 
-    std::vector<Multiply<Expression>> ans;
+    std::vector<std::unique_ptr<Expression>> ans;
     ans.reserve(zeroes.size());
     for (int i = 0; i < zeroes.size(); i++){
-//        ans.push_back(Multiply{Variable{std::string("c_").append(std::to_string(i))},
-//                        Exponent{}});
+        ans.emplace_back(std::make_unique<Multiply<Expression>>(Variable{std::string("c_").append(std::to_string(i))},
+            Exponent<Expression>{EulerNumber{}, Multiply{*(zeroes[i]->Copy()->Simplify()), *DiffVar.Copy()}}));
     }
 
-    return Exponent{EulerNumber{}, Multiply{Real{1}, Variable{"t"}}}.Generalize();
+    auto eq = BuildFromVector<Add>(ans);
+    return eq;
 }
 }

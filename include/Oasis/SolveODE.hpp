@@ -12,6 +12,7 @@
 namespace Oasis{
 /**
  * This method solves for the homogenous solution to the provided list of terms for the differential equation.
+ * This method is tested for real first and second order equations.
  * @param terms Vector of Expression unique pointers representing the homogenous differential equation.
  *              If the input equation is &alpha*y'' + &beta*y' +&gamma*y = 0, terms[0] is &gamma - the constant term,
  *              terms[1] is &beta - the first derivative, terms[2] is &alpha - the second derivative, etc.
