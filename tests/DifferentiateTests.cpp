@@ -13,6 +13,7 @@
 #include "Oasis/Derivative.hpp"
 #include "Oasis/Log.hpp"
 #include "Oasis/EulerNumber.hpp"
+#include "Oasis/RecursiveCast.hpp"
 
 TEST_CASE("Differentiate Nonzero number", "[Differentiate][Real][Nonzero]")
 {
@@ -342,12 +343,11 @@ TEST_CASE("Derivative with degree", "[Derivative]")
     REQUIRE(simplified1->Equals(expected1));
 }
 
-// TODO: FIX SO IT WORKS
 TEST_CASE("Second Degree Derivative", "[Derivative]")
 {
     Oasis::Exponent exp{Oasis::EulerNumber{}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
 
-    Oasis::Derivative diff2Exp(exp, Oasis::Variable{"x"}, 2);
+    Oasis::Derivative diff2Exp{exp, Oasis::Variable{"x"}, 2};
 
     REQUIRE(diff2Exp.GetDegree() == 2);
 
@@ -356,4 +356,15 @@ TEST_CASE("Second Degree Derivative", "[Derivative]")
     Oasis::Multiply expected2{Oasis::Real{4}, exp};
 
     REQUIRE(simplified2->Equals(expected2));
+}
+
+TEST_CASE("Zeroth Degree Derivative", "[Derivative]")
+{
+    Oasis::Exponent exp{Oasis::EulerNumber{}, Oasis::Multiply{Oasis::Real{2.0},Oasis::Variable{"x"}}};
+
+    Oasis::Derivative diff0Exp{exp, Oasis::Variable{"x"}, 0};
+
+    auto simplified0 = diff0Exp.Simplify();
+
+    REQUIRE(simplified0->Equals(exp));
 }

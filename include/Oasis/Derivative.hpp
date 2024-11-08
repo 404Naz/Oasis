@@ -6,7 +6,6 @@
 #define OASIS_DERIVATIVE_HPP
 
 #include "BinaryExpression.hpp"
-#include "Exponent.hpp"
 #include "Real.hpp"
 
 namespace Oasis {
@@ -22,17 +21,42 @@ public:
         : BinaryExpression(), degree(1)
     {
     }
-//    Derivative(const Derivative<Expression, Expression>& other) = default;
+
     Derivative(const Derivative<Expression, Expression>& other) = default;
 
-    // Derivative(const Expression& Exp, const Expression& Var); OLD
-    Derivative(const Expression& Exp, const Expression& Var, int deg = 1)
+    Derivative(const Expression& Exp, const Expression& Var)
+        : BinaryExpression(Exp, Var), degree(1)
+    {
+    }
+
+    [[nodiscard]] auto Generalize() const -> std::unique_ptr<Expression> final
+    {
+        Derivative generalized;
+
+        if (this->mostSigOp) {
+            generalized.SetMostSigOp(*this->mostSigOp->Copy());
+        }
+
+        if (this->leastSigOp) {
+            generalized.SetLeastSigOp(*this->leastSigOp->Copy());
+        }
+
+        generalized.SetDegree(this->GetDegree());
+
+        return std::make_unique<Derivative>(generalized);
+    }
+
+    Derivative(const Expression& Exp, const Expression& Var, int deg)
         : BinaryExpression(Exp, Var), degree(deg)
     {
     }
 
-    int GetDegree();
-    void SetDegree(int deg);
+    int GetDegree() const{
+        return degree;
+    }
+    void SetDegree(int deg){
+        degree = deg;
+    }
 
     [[nodiscard]] auto Simplify() const -> std::unique_ptr<Expression> final;
 
@@ -42,7 +66,7 @@ public:
     EXPRESSION_CATEGORY(BinExp)
 
 private:
-    int degree;
+    int degree{};
 };
 /// @endcond
 
@@ -62,17 +86,41 @@ public:
     {
     }
 
-    Derivative(const DependentT& exp, const IndependentT& var, int deg = 1)
+    Derivative(const DependentT& exp, const IndependentT& var)
         : BinaryExpression<Oasis::Derivative, DependentT, IndependentT>(exp, var)
-        , degree(deg)
+        , degree(1)
+    {
+    }
+
+    Derivative(const DependentT& exp, const IndependentT& var, int deg)
+        : BinaryExpression<Oasis::Derivative, DependentT, IndependentT>(exp, var), degree(deg)
     {
     }
 
     auto operator=(const Derivative& other) -> Derivative& = default;
-    int GetDegree()
+
+    [[nodiscard]] auto Generalize() const -> std::unique_ptr<Expression> final
+    {
+        Derivative<Expression> generalized;
+
+        if (this->mostSigOp) {
+            generalized.SetMostSigOp(*this->mostSigOp->Copy());
+        }
+
+        if (this->leastSigOp) {
+            generalized.SetLeastSigOp(*this->leastSigOp->Copy());
+        }
+
+        generalized.SetDegree(this->GetDegree());
+
+        return std::make_unique<Derivative<Expression>>(generalized);
+    }
+
+    [[nodiscard]] int GetDegree() const
     {
         return degree;
     }
+
     void SetDegree(int deg)
     {
         degree = deg;
@@ -81,7 +129,7 @@ public:
     EXPRESSION_TYPE(Derivative)
     EXPRESSION_CATEGORY(BinExp)
 private:
-    int degree;
+    int degree{};
 };
 
 } // namespace Oasis

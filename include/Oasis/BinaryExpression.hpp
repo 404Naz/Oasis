@@ -182,7 +182,7 @@ public:
         return true;
     }
 
-    [[nodiscard]] auto Generalize() const -> std::unique_ptr<Expression> final
+    [[nodiscard]] auto Generalize() const -> std::unique_ptr<Expression> override
     {
         DerivedGeneralized generalized;
 
