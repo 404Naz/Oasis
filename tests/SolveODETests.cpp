@@ -52,3 +52,56 @@ TEST_CASE("Test Second Order Homogenous", "[ODE]")
 
     REQUIRE(ans->Equals(*expected));
 }
+
+TEST_CASE("Test Second Order Complex Homogenous", "[ODE]")
+{
+    Oasis::Variable x{"x"};
+
+    Oasis::Exponent e1{
+        Oasis::EulerNumber{},
+        Oasis::Multiply{
+            Oasis::Real{0.5},
+            Oasis::Multiply{
+                Oasis::Add{
+                    Oasis::Real{3.0},
+                    Oasis::Multiply{
+                        Oasis::Real{pow(7.0, 0.5)},
+                        Oasis::Imaginary{}
+                    }},
+                x}}};
+
+    Oasis::Exponent e2{
+        Oasis::EulerNumber{},
+        Oasis::Multiply{
+            Oasis::Real{0.5},
+            Oasis::Multiply{
+                Oasis::Add{
+                    Oasis::Real{3.0},
+                    Oasis::Multiply{
+                        Oasis::Real{-pow(7.0, 0.5)},
+                        Oasis::Imaginary{}
+                    }},
+                x}}};
+
+    std::vector<std::unique_ptr<Oasis::Expression>> eq;
+    eq.emplace_back(std::make_unique<Oasis::Real>(4.0)); // gamma
+    eq.emplace_back(std::make_unique<Oasis::Real>(-3.0)); // beta
+    eq.emplace_back(std::make_unique<Oasis::Real>(1.0)); // alpha
+
+    auto ans = Oasis::SolveHomogenousODE(eq, x);
+
+    auto expected = Oasis::Add{
+        Oasis::Multiply{
+            Oasis::Variable{"c_0"},
+            *e1.Simplify()
+        },
+        Oasis::Multiply{
+            Oasis::Variable{"c_1"},
+            *e2.Simplify()
+        }
+    }.Simplify();
+
+
+
+    REQUIRE(ans->Simplify()->Equals(*expected));
+}

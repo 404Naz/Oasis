@@ -15,6 +15,10 @@
 #include "Oasis/Multiply.hpp"
 #include "Oasis/RecursiveCast.hpp"
 
+#ifndef EPSILON
+#define EPSILON 1E-6
+#endif
+
 namespace Oasis {
 
 Exponent<Expression>::Exponent(const Expression& base, const Expression& power)
@@ -49,6 +53,10 @@ auto Exponent<Expression>::Simplify() const -> std::unique_ptr<Expression>
         const Real& base = realCase->GetMostSigOp();
         const Real& power = realCase->GetLeastSigOp();
 
+        if (base.GetValue() < 0 && power.GetValue() - 0.5 < EPSILON){ // imaginary
+            return std::make_unique<Multiply<Real, Imaginary>>(Real{pow(abs(base.GetValue()), power.GetValue())}, Imaginary{});
+        }
+        // Not imaginary
         return std::make_unique<Real>(pow(base.GetValue(), power.GetValue()));
     }
 

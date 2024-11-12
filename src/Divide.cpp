@@ -28,6 +28,8 @@ auto Divide<Expression>::Simplify() const -> std::unique_ptr<Expression>
     auto simplifiedDivider = leastSigOp->Simplify(); // denominator
     Divide simplifiedDivide { *simplifiedDividend, *simplifiedDivider };
 
+    //if (auto addCase = RecursiveCast<Divide>())
+
     if (auto realCase = RecursiveCast<Divide<Real>>(simplifiedDivide); realCase != nullptr) {
         const Real& dividend = realCase->GetMostSigOp();
         const Real& divisor = realCase->GetLeastSigOp();
