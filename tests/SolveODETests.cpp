@@ -105,3 +105,8 @@ TEST_CASE("Test Second Order Complex Homogenous", "[ODE]")
 
     REQUIRE(ans->Simplify()->Equals(*expected));
 }
+
+TEST_CASE("Test First Order Particular", "[ODE]")
+{
+
+}
