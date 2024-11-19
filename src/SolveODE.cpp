@@ -52,12 +52,24 @@ auto SolveHomogenousODE(std::vector<std::unique_ptr<Expression>>& terms, Variabl
 auto SolveParticularODE(std::vector<std::unique_ptr<Expression>>& terms, std::unique_ptr<Expression>& equivalent,
     Variable& DiffVar) -> std::unique_ptr<Expression>
 {
-    // Sinusoid equivalent
+    if (terms.size() == 1){
+        return equivalent->Copy();
+    }
 
-    // Exponential Equivalent
+    std::vector<std::unique_ptr<Expression>> guess;
 
-    // Polynomial Equivalent
+    auto derivative = equivalent->Copy();
+    for (int i = 0; i < terms.size(); i++){
+        if (i==0){
+            guess.push_back(std::make_unique<Multiply<Expression>>(*terms[i], Multiply{Variable{std::string("k_").append(std::to_string(i))}, *equivalent}));
+        } else {
+            auto nextDerivative = derivative->Differentiate(DiffVar);
+            guess.push_back(std::make_unique<Multiply<Expression>>(*terms[i], Multiply{Variable{std::string("k_").append(std::to_string(i))}, *nextDerivative}));
+            derivative = std::move(nextDerivative);
+        }
+    }
 
+    auto guessExp = BuildFromVector<Add>(guess)->Simplify();
 
     return std::unique_ptr<Expression>{};
 }

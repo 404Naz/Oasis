@@ -106,7 +106,20 @@ TEST_CASE("Test Second Order Complex Homogenous", "[ODE]")
     REQUIRE(ans->Simplify()->Equals(*expected));
 }
 
-TEST_CASE("Test First Order Particular", "[ODE]")
+TEST_CASE("Test First Order Particular exponential", "[ODE]")
 {
+    Oasis::Variable x{"x"};
 
+    std::vector<std::unique_ptr<Oasis::Expression>> eq;
+    eq.emplace_back(std::make_unique<Oasis::Real>(5.0));
+    eq.emplace_back(std::make_unique<Oasis::Real>(-2.0));
+
+    auto sol = Oasis::Exponent{Oasis::EulerNumber{},Oasis::Multiply{Oasis::Real{-1.0}, Oasis::Variable{"x"}}}.Simplify();
+
+    auto ans = Oasis::SolveParticularODE(eq, sol, x);
+
+    auto expected = Oasis::Multiply{Oasis::Variable{"c_0"},
+        Oasis::Exponent{Oasis::EulerNumber{}, Oasis::Multiply{Oasis::Real{-5.0/-2.0}, x}}}.Generalize();
+
+    REQUIRE(ans->Equals(*expected));
 }
