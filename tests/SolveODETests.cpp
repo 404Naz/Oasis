@@ -114,7 +114,8 @@ TEST_CASE("Test First Order Particular exponential", "[ODE]")
     eq.emplace_back(std::make_unique<Oasis::Real>(5.0));
     eq.emplace_back(std::make_unique<Oasis::Real>(-2.0));
 
-    auto sol = Oasis::Exponent{Oasis::EulerNumber{},Oasis::Multiply{Oasis::Real{-1.0}, Oasis::Variable{"x"}}}.Simplify();
+    std::vector<std::unique_ptr<Oasis::Expression>> sol;
+    sol.push_back(Oasis::Exponent{Oasis::EulerNumber{},Oasis::Multiply{Oasis::Real{-1.0}, Oasis::Variable{"x"}}}.Copy());
 
     auto ans = Oasis::SolveParticularODE(eq, sol, x);
 

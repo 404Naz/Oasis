@@ -31,7 +31,7 @@ auto SolveHomogenousODE(std::vector<std::unique_ptr<Expression>>& terms, Variabl
  * @return Particular solution to the equation for the function. This will resemble the input function in function.
  */
 auto SolveParticularODE(std::vector<std::unique_ptr<Expression>>& terms,
-    std::unique_ptr<Expression>& equivalent, Variable& DiffVar) -> std::unique_ptr<Expression>;
+    std::vector<std::unique_ptr<Expression>>& equivalent, Variable& DiffVar) -> std::unique_ptr<Expression>;
 
 /**
  * Solves for the homogenous and particular solution of the differential equation.
